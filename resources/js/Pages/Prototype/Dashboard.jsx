@@ -46,6 +46,7 @@ export default function Dashboard() {
                                 name={`The Batman in Love ${i}`}
                                 category="Comedy"
                                 thumbnail="https://picsum.photos/id/1/300/300"
+                                rating={i+1}
                             />
                         ))}
                     </Flickity>
