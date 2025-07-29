@@ -1,15 +1,17 @@
 import ReactPlayer from 'react-player'
-import { Link } from '@inertiajs/react'
+import { Link, Head } from '@inertiajs/react'
 
 export default function Show() {
     return (
-        <section className="mx-auto w-screen h-screen relative watching-page font-poppins bg-form-bg" id="stream">
+        <>
+            <Head title="Show" />
+            <section className="mx-auto w-screen h-screen relative watching-page font-poppins bg-form-bg" id="stream">
             <div className='pt-[100px]'>
                 <ReactPlayer 
                     url="https://www.youtube.com/watch?v=93YDqv3KBUs"
                     controls={true}
-                    width="100%"
-                    height="850px"
+                    width={"100%"}
+                    height={"850px"}
                     playing={false}
                     muted={false}
                 />  
@@ -29,5 +31,7 @@ export default function Show() {
                 </span>
             </div>
         </section>
+        </>
+        
     )
 }

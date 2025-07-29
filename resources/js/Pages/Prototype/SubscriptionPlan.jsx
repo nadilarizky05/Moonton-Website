@@ -1,9 +1,12 @@
 import Authenticated from "@/Layouts/Authenticated/Index"
 import SubscriptionCard from "@/Components/SubscriptionCard"
+import { Head } from "@inertiajs/react"
 
 export default function SubscriptionPlan() {
     return (
-        <Authenticated>
+        <>
+            <Head title="Subcription Plan"/>
+            <Authenticated>
             <div className="py-20 flex flex-col items-center">
                 <div className="text-black font-semibold text-[26px] mb-3">
                     Pricing for Everyone
@@ -31,5 +34,7 @@ export default function SubscriptionPlan() {
                 {/* <!-- /Pricing Card --> */}
             </div>
         </Authenticated>
+        </>
+        
     )
 }
