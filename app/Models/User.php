@@ -50,7 +50,7 @@ class User extends Authenticatable
         ];
     }
 
-    public function getIsActiveAtrribute(){
+    public function getIsActiveAttribute(){
         if (!$this->LastActiveUserSubscription) {
             return false;
         }
