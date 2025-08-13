@@ -1,19 +1,14 @@
+import { Head, Link, useForm, router } from '@inertiajs/react';
 import Authenticated from "@/Layouts/Authenticated/Index";
-import { Head, Link, useForm } from '@inertiajs/react';
 import Label from "@/Components/InputLabel";
 import Input from "@/Components/TextInput";
 import Checkbox from '@/Components/Checkbox';
 import Button from '@/Components/PrimaryButton';
 import ValidationErrors from '@/Components/ValidationErrors';
 
-export default function Create({auth}) {
-    const { setData, post, processing, errors } = useForm({
-        name: '',
-        category: '',
-        video_url: '',
-        thumbnail: '',
-        rating: '',
-        is_featured: false,
+export default function Edit({auth, movie}) {
+    const { setData, data, processing, errors } = useForm({
+        ...movie,
     });
 
     const onHandleChange = (event) => {
@@ -27,12 +22,25 @@ export default function Create({auth}) {
 
     const submit = (e) => {
         e.preventDefault();
-        post(route('admin.dashboard.movie.store'));
+
+        if (data.thumbnail === movie.thumbnail) {
+            delete data.thumbnail;
+        }
+        
+        // Create FormData for file upload
+        const formData = new FormData();
+        formData.append('_method', 'PUT');
+        
+        router.post(route("admin.dashboard.movie.update", movie.id), {
+            _method: "PUT",
+            ...data
+        })
     };
+
     return (
         <Authenticated auth={auth}>
-            <Head title='Admin - Create Movie' />
-            <h1 className="text-xl">Insert a New Movie</h1>
+            <Head title='Admin - Update Movie' />
+            <h1 className="text-xl">Update Movie: {movie.name}</h1>
             <hr className="mb-4" />
             <ValidationErrors errors={errors} />
             <form onSubmit={submit}>
@@ -40,30 +48,41 @@ export default function Create({auth}) {
                 <Input 
                     type="text"
                     name="name"
+                    defaultValue={data.name}
                     variant="primary-outline"
                     onChange={onHandleChange}
-                    placeholder="Enter the name of the movie"
+                    placeholder="Enter the name of movie"
                     isError={errors.name}
                 />
+                
                 <Label forInput="category" value="Category" className='mt-4'/>
                 <Input 
                     type="text"
                     name="category"
+                    defaultValue={data.category}
                     variant="primary-outline"
                     onChange={onHandleChange}
-                    placeholder="Enter the category of the movie"
+                    placeholder="Enter the category of movie"
                     isError={errors.category}
                 />
+                
                 <Label forInput="video_url" value="Video URL" className='mt-4'/>
                 <Input 
                     type="url"
                     name="video_url"
+                    defaultValue={data.video_url}
                     variant="primary-outline"
                     onChange={onHandleChange}
-                    placeholder="Enter the video url of the movie"
+                    placeholder="Enter the video url of movie"
                     isError={errors.video_url}
                 />
+                
                 <Label forInput="thumbnail" value="Thumbnail" className='mt-4'/>
+                    <img 
+                        src={`/storage/${movie.thumbnail}`} 
+                        className='w-40 mb-2' 
+                        alt="Current thumbnail" 
+                    />
                 <Input 
                     type="file"
                     name="thumbnail"
@@ -71,26 +90,36 @@ export default function Create({auth}) {
                     onChange={onHandleChange}
                     placeholder="Insert thumbnail of the movie"
                     isError={errors.thumbnail}
+                    accept="image/*"
                 />
+                
                 <Label forInput="rating" value="Rating" className='mt-4'/>
                 <Input 
                     type="number"
                     name="rating"
+                    value={data.rating}
                     variant="primary-outline"
                     onChange={onHandleChange}
                     placeholder="Insert rating of the movie"
                     isError={errors.rating}
+                    min="0"
+                    max="10"
+                    step="0.1"
                 />
 
                 <div className="flex flex-row mt-4 items-center">
                     <Label forInput="is_featured" value="Is Featured" className='mr-3 mt-1'/>
                     <Checkbox 
                         name="is_featured"
-                        onChange={(e) => setData("is_featured", e.target.checked)}
+                        onChange={(e) =>
+                            setData("is_featured", e.target.checked)
+                        }
+                        checked={movie.is_featured}
                     />
                 </div>
+                
                 <Button type="submit" className="mt-4" processing={processing}>
-                    Save
+                    Update Movie
                 </Button>
             </form>
         </Authenticated>
