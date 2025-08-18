@@ -56,6 +56,9 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user(),
                 'activePlan' => $this->activePlan()
             ],
+            'env' => [
+                'MIDTRANS_CLIENTKEY' => env('MIDTRANS_CLIENTKEY')
+            ],
             'flashMessage' => [
                 'message' => Session::get('message'),
                 'type' => Session::get('type')
