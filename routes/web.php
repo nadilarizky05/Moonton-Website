@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 
+Route::post('midtrans/notification', [SubscriptionPlanController::class, 'midtransCallback'])->name('midtrans.callback');;
+
 Route::redirect('/', '/login');
 
 Route::middleware(['auth', 'role:user'])->prefix('dashboard')->name('user.dashboard.')->group(function() {
